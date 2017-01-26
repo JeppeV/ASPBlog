@@ -181,10 +181,12 @@ function showPosts(post_array) {
             ul_tag.innerHTML = current.Tags[j].TagName
             tags.appendChild(ul_tag);
         }
-        
+        var p_image = document.createElement("img");
+        p_image.src = "/Home/Image/?imageID=" + current.ImageID;
         div.appendChild(p_title);
         div.appendChild(p_intro);
         div.appendChild(tags);
+        div.appendChild(p_image);
         var posts_elem = document.getElementById("list_posts_div");
         posts_elem.appendChild(div);
         

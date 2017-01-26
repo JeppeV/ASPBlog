@@ -24,7 +24,7 @@ namespace AspBlog.Models
         public string Title { get; set; }
         public string Date { get; set; }
         public string Type { get; set; }
-        public byte[] Image { get; set; }
+        public string ImageID { get; set; }
         public string IntroText { get; set; }
         public string OutroText { get; set; }
 
@@ -78,12 +78,5 @@ namespace AspBlog.Models
         
     }
 
-    public class Image
-    {
-        [Key]
-        public int ImageId { get; set; }
-        public string ImageName { get; set; }
-        public byte[] ImageData { get; set; }
-    }
 
 }

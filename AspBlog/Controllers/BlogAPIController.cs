@@ -12,6 +12,7 @@ using System.Data.Entity;
 using System.Web;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.IO;
 
 namespace AspBlog.Controllers
 {
@@ -120,25 +121,56 @@ namespace AspBlog.Controllers
          */
         [HttpPost]
         [ActionName("Test")]
-        public async void Test()
+        public async Task<string> Test()
         {
+            if (!Request.Content.IsMimeMultipartContent())
+                throw new Exception();
+
             var streamProvider = await Request.Content.ReadAsMultipartAsync(); // HERE
+            BlogPost newPost = null;
+            string newImageID = null;
             foreach (var data in streamProvider.Contents)
             {
                 string formName = data.Headers.ContentDisposition.Name.Trim('\"');
                 if (formName == "main_image")
                 {
-                    byte[] bytes = await data.ReadAsByteArrayAsync();
+                    
+                    byte[] image_data = await data.ReadAsByteArrayAsync();
+                    
+                    newImageID = saveImage(data.Headers.ContentDisposition.FileName.Trim('\"'), image_data);
 
-                }else if(formName == "post_data")
+                }
+                else if(formName == "post_data")
                 {
                     var jsonPost = await data.ReadAsStringAsync();
-                    BlogPost post = new JavaScriptSerializer().Deserialize<BlogPost>(jsonPost);
+                    newPost = new JavaScriptSerializer().Deserialize<BlogPost>(jsonPost);
                 }
                 
             }
+            newPost.ImageID = newImageID;
+            using(var context = new BlogModelContext())
+            {
+                context.BlogPosts.Add(newPost);
+                context.SaveChanges();
+            }
+            return "";
 
         }
+
+        private string saveImage(string filename, byte[] image_data)
+        {
+            string[] tokens = filename.Split('.');
+            string ext = tokens[tokens.Length - 1];
+            string imageID = "0." + ext;
+            string imagePath = HttpContext.Current.Server.MapPath("~") + @"Images\" + imageID;
+            using(FileStream fs = new FileStream(imagePath, FileMode.OpenOrCreate))
+            {
+                fs.Write(image_data, 0, image_data.Length);
+            }
+            return imageID;
+        }
+
+        
 
 
         private DateTime convertDateStringToDateTime(string dateString)

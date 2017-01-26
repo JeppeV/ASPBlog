@@ -23,7 +23,14 @@ namespace AspBlog.Controllers
             return View("Test");
         }
 
-        
+        public ActionResult Image(string imageID)
+        {
+            string[] tokens = imageID.Split('.');
+            string ext = tokens[tokens.Length - 1];
+            return File(Server.MapPath("~") + @"Images\" + imageID, "image/"+ext);
+        }
+
+
 
     }
 }
