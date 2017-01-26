@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Blog</title>
+	<meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../Content/main_style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-route.js"></script>
+    <script src="../Scripts/main_script.js"></script>
+</head>
+<body ng-app="blog_app" ng-controller="main_controller">
+
+    <div id="header" class="main_element">
+        <div id="header_title">{{model.title}}</div>
+        <div id="header_menu_wrapper">
+            <ul id="header_menu">
+                <li ng-repeat="entry in model.header_entries" ng-click="model.changeView(entry)">
+                    {{entry}} 
+                </li>
+
+            </ul>
+        </div>
+        
+    </div>
+
+    <div id="container">
+        <div id="container_view" class="main_element" ng-view>
+
+        </div>
+        <div id="container_menu" class="main_element">
+
+        </div>
+    </div>
+
+    
+
+    
+
+    
+    
+</body>
+</html>
