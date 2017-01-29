@@ -145,6 +145,7 @@
     <Content Include="Scripts\main_script.js" />
     <Content Include="Scripts\test_script.js" />
     <None Include="Views\AngularViews\Home.cshtml" />
+    <Content Include="Views\AngularViews\Post.cshtml" />
     <None Include="Views\Home\Test.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\AngularViews\Contact.cshtml" />
@@ -161,6 +162,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />

@@ -32,7 +32,7 @@ test_app.controller("test_controller", function ($scope, $http) {
         }
         payload.append('post_data', JSON.stringify(post_data));
         $http({
-            url: "/api/BlogAPI/Test",
+            url: "/api/BlogAPI/AddPost",
             method: 'POST',
             data: payload,
             //assign content-type as undefined, the browser
@@ -182,7 +182,7 @@ function showPosts(post_array) {
             tags.appendChild(ul_tag);
         }
         var p_image = document.createElement("img");
-        p_image.src = "/Home/Image/?imageID=" + current.ImageID;
+        p_image.src = "/Home/Image/?imageID=" + current.MainImageID;
         div.appendChild(p_title);
         div.appendChild(p_intro);
         div.appendChild(tags);

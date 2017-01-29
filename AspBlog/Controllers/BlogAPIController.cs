@@ -19,20 +19,6 @@ namespace AspBlog.Controllers
     public class BlogAPIController : ApiController
     {
 
-        [HttpPost]
-        [ActionName("AddPost")]
-        public string AddPost(BlogPost post_data)
-        {
-            List<BlogPost> resultPosts;
-            using (var context = new BlogModelContext())
-            {
-                context.BlogPosts.Add(post_data);
-                context.SaveChanges();
-                resultPosts = getFullBlogPostQuery(context).ToList();
-            }
-            var jsonResponse = getJSON(resultPosts);
-            return jsonResponse;
-        }
 
         [HttpGet]
         [ActionName("GetAllPosts")]
@@ -115,12 +101,9 @@ namespace AspBlog.Controllers
             return jsonResponse;
         }
 
-        /*
-         * Change to become AddPost
-         * Insert img byte array into post
-         */
+        
         [HttpPost]
-        [ActionName("Test")]
+        [ActionName("AddPost")]
         public async Task<string> Test()
         {
             if (!Request.Content.IsMimeMultipartContent())
@@ -128,17 +111,18 @@ namespace AspBlog.Controllers
 
             var streamProvider = await Request.Content.ReadAsMultipartAsync(); // HERE
             BlogPost newPost = null;
-            string newImageID = null;
-            foreach (var data in streamProvider.Contents)
+            List<TempImageInfo> imageInfos = new List<TempImageInfo>();
+            
+            foreach (HttpContent data in streamProvider.Contents)
             {
                 string formName = data.Headers.ContentDisposition.Name.Trim('\"');
                 if (formName == "main_image")
                 {
-                    
-                    byte[] image_data = await data.ReadAsByteArrayAsync();
-                    
-                    newImageID = saveImage(data.Headers.ContentDisposition.FileName.Trim('\"'), image_data);
-
+                    var imageInfo = new TempImageInfo();
+                    imageInfo.ImageFilename = data.Headers.ContentDisposition.FileName.Trim('\"');
+                    imageInfo.ImageData = await data.ReadAsByteArrayAsync();
+                    imageInfo.IsMainImage = true;
+                    imageInfos.Add(imageInfo);
                 }
                 else if(formName == "post_data")
                 {
@@ -147,7 +131,19 @@ namespace AspBlog.Controllers
                 }
                 
             }
-            newPost.ImageID = newImageID;
+            Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~") + @"Images\" + newPost.Title + @"\Steps");
+            foreach(TempImageInfo imageInfo in imageInfos)
+            {
+                if (imageInfo.IsMainImage)
+                {
+                    newPost.MainImageID = saveImage(newPost, imageInfo);
+                }
+                else
+                {
+                    //TODO: step images
+                }
+            }
+            
             using(var context = new BlogModelContext())
             {
                 context.BlogPosts.Add(newPost);
@@ -157,17 +153,35 @@ namespace AspBlog.Controllers
 
         }
 
-        private string saveImage(string filename, byte[] image_data)
+        private class TempImageInfo
         {
-            string[] tokens = filename.Split('.');
-            string ext = tokens[tokens.Length - 1];
-            string imageID = "0." + ext;
+            public string ImageFilename { get; set; }
+            public byte[] ImageData { get; set; }
+            public bool IsMainImage { get; set; }
+        }        
+
+        private string saveImage(BlogPost post, TempImageInfo imageInfo)
+        {
+            string imageID = generateImageID(post, imageInfo);
             string imagePath = HttpContext.Current.Server.MapPath("~") + @"Images\" + imageID;
             using(FileStream fs = new FileStream(imagePath, FileMode.OpenOrCreate))
             {
-                fs.Write(image_data, 0, image_data.Length);
+                fs.Write(imageInfo.ImageData, 0, imageInfo.ImageData.Length);
             }
             return imageID;
+        }
+
+        private string generateImageID(BlogPost post, TempImageInfo imageInfo)
+        {
+            string extension = Utility.getFileExtension(imageInfo.ImageFilename);
+            if (imageInfo.IsMainImage)
+            {
+                return post.Title + @"\main." + extension;
+            }
+            else
+            {   //TODO
+                return post.Title + @"\Steps\step#x." + extension;
+            }
         }
 
         

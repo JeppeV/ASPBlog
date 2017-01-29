@@ -13,10 +13,10 @@
 <body ng-app="blog_app" ng-controller="main_controller">
 
     <div id="header" class="main_element">
-        <div id="header_title">{{model.title}}</div>
+        <div id="header_title">{{title}}</div>
         <div id="header_menu_wrapper">
             <ul id="header_menu">
-                <li ng-repeat="entry in model.header_entries" ng-click="model.changeView(entry)">
+                <li ng-repeat="entry in header_entries" ng-click="changeView(entry)">
                     {{entry}} 
                 </li>
 

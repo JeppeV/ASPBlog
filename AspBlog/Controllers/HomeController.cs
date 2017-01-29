@@ -23,12 +23,18 @@ namespace AspBlog.Controllers
             return View("Test");
         }
 
+        /* TODO: Add input validation for safety */
         public ActionResult Image(string imageID)
         {
-            string[] tokens = imageID.Split('.');
-            string ext = tokens[tokens.Length - 1];
-            return File(Server.MapPath("~") + @"Images\" + imageID, "image/"+ext);
+            string extension = Utility.getFileExtension(imageID);
+            return File(pathToImage(imageID), "image/"+ extension);
         }
+
+        private string pathToImage(string imageID)
+        {
+            return Server.MapPath("~") + @"Images\" + imageID;
+        }
+
 
 
 

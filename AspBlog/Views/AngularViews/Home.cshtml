@@ -1,1 +1,14 @@
-﻿<h1> Hello from Home.cshtml</h1>
+﻿<div id="container_inner" ng-controller="home_controller">
+    <div class="home_post_container" ng-repeat="post in posts">
+        <div class="post_header">
+            <a ng-click="goToPost(post.PostId)">
+                {{post.Title}}
+            </a>
+        </div>
+        <div class="post_image_container">
+            <img ng-src="/Home/Image/?imageID={{post.MainImageID}}" ng-click="goToPost(post.PostId)" />
+        </div>
+        <div class="post_intro">{{post.IntroText | text_length_filter}}</div>
+    </div>
+
+</div>

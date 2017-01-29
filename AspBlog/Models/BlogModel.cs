@@ -24,7 +24,7 @@ namespace AspBlog.Models
         public string Title { get; set; }
         public string Date { get; set; }
         public string Type { get; set; }
-        public string ImageID { get; set; }
+        public string MainImageID { get; set; }
         public string IntroText { get; set; }
         public string OutroText { get; set; }
 
@@ -74,7 +74,7 @@ namespace AspBlog.Models
         [Key]
         public int StepId { get; set; }
         public string Text { get; set; }
-        public byte[] StepImage { get; set; }
+        public string StepImageID { get; set; }
         
     }
 

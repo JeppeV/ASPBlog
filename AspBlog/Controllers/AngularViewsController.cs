@@ -18,5 +18,10 @@ namespace AspBlog.Controllers
         {
             return View("Contact");
         }
+
+        public ActionResult Post()
+        {
+            return View("Post");
+        }
     }
 }
