@@ -1,14 +1,19 @@
-﻿<div id="container_inner" ng-controller="home_controller">
+﻿<div id="container_inner" class="fill_parent" ng-controller="home_controller">
     <div class="home_post_container" ng-repeat="post in posts">
-        <div class="post_header">
+        <div class="home_post_header">
             <a ng-click="goToPost(post.PostId)">
                 {{post.Title}}
             </a>
         </div>
-        <div class="post_image_container">
+        <div class="home_post_image_container">
             <img ng-src="/Home/Image/?imageID={{post.MainImageID}}" ng-click="goToPost(post.PostId)" />
         </div>
-        <div class="post_intro">{{post.IntroText | text_length_filter}}</div>
+        <div class="home_post_intro">
+            {{post.IntroText | text_length_filter}}
+        </div>
+        <div class="home_post_goto" ng-click="goToPost(post.PostId)">
+            Read More
+        </div>
     </div>
 
 </div>

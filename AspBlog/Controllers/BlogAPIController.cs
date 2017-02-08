@@ -67,7 +67,7 @@ namespace AspBlog.Controllers
             List<BlogPost> resultPosts;
             using (var context = new BlogModelContext())
             {
-                var tempList = getFullBlogPostQuery(context).ToList().OrderBy(p => convertDateStringToDateTime(p.Date));
+                var tempList = getFullBlogPostQuery(context).ToList().OrderByDescending(p => convertDateStringToDateTime(p.Date));
                 resultPosts = tempList.Take(n).ToList();
             }
             var jsonResponse = getJSON(resultPosts);
@@ -82,7 +82,7 @@ namespace AspBlog.Controllers
             BlogPost resultPost;
             using (var context = new BlogModelContext())
             {
-                resultPost = context.BlogPosts.Find(id);
+                resultPost = getFullBlogPostQuery(context).FirstOrDefault(p => p.PostId == id);
             }
             var jsonResponse = getJSON(resultPost);
             return jsonResponse;

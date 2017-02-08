@@ -1,6 +1,26 @@
 ﻿<div id="container_inner" ng-controller="post_controller">
-    {{post.Title}}
+    <div id="post_container">
 
+        <div id="post_header">{{post.Title}}</div>
 
+        <div id="post_intro" class="post_text">{{post.IntroText}}</div>
 
+        <div id="post_image_container">
+            <img ng-src="/Home/Image/?imageID={{post.MainImageID}}" />
+        </div>
+
+        <div id="post_ingredients_header">
+            Ingredients
+        </div>
+
+        <div id="post_ingredients">
+            <ul id="post_ingredients_list">
+                <li class="post_ingredient post_text" ng-repeat="ingredient in post.Ingredients">
+                    {{ingredient.Name}}
+                </li>
+            </ul>
+        </div>
+    
+    </div>
 </div>
+<script src="../Scripts/post_script.js"></script>

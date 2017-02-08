@@ -143,6 +143,7 @@
     <Content Include="Content\main_style.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\main_script.js" />
+    <Content Include="Scripts\post_script.js" />
     <Content Include="Scripts\test_script.js" />
     <None Include="Views\AngularViews\Home.cshtml" />
     <Content Include="Views\AngularViews\Post.cshtml" />
