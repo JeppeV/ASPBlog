@@ -26,7 +26,9 @@ blog_app.controller('home_controller', function ($scope, $location, $http) {
     $scope.posts = [];
     $http.get("/api/BlogAPI/GetLastNPosts?n=5")
         .then(function (result) {
-            $scope.posts = angular.fromJson(result.data);
+            
+            $scope.posts = restoreLineBreaks(angular.fromJson(result.data));
+            console.log($scope.posts[0].IntroText);
             $scope.$parent.access.setContainerHeight(home_post_container_height * $scope.posts.length);
             
         });
@@ -35,6 +37,8 @@ blog_app.controller('home_controller', function ($scope, $location, $http) {
         $location.url("/Post/" + postId);
     };
 });
+
+
 
 blog_app.filter('text_length_filter', function () {
     return function (input) {
@@ -59,7 +63,13 @@ blog_app.controller('post_controller', function ($scope, $routeParams, $http, $t
         });
 });
 
-
+function restoreLineBreaks(posts) {
+    for (var i = 0; i < posts.length; i++) {
+        var post = posts[i];
+        post.IntroText = post.IntroText.trim();
+    }
+    return posts;
+}
 
 
 

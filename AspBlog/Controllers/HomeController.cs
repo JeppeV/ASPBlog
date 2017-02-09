@@ -16,6 +16,11 @@ namespace AspBlog.Controllers
         {
             return View("Index");
         }
+
+        public ActionResult Admin()
+        {
+            return View("Admin");
+        }
         
         /* /Home/Test */
         public ActionResult Test()
@@ -34,6 +39,8 @@ namespace AspBlog.Controllers
         {
             return Server.MapPath("~") + @"Images\" + imageID;
         }
+
+        
 
 
 

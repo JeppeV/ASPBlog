@@ -8,7 +8,7 @@
         <div class="home_post_image_container">
             <img ng-src="/Home/Image/?imageID={{post.MainImageID}}" ng-click="goToPost(post.PostId)" />
         </div>
-        <div class="home_post_intro">
+        <div class="home_post_intro text_formatting">
             {{post.IntroText | text_length_filter}}
         </div>
         <div class="home_post_goto" ng-click="goToPost(post.PostId)">

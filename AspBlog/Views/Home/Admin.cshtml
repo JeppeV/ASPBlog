@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="../../Scripts/admin_script.js"></script>
+    <link href="~/Content/admin_style.css" rel="stylesheet" />
+
+</head>
+<body ng-app="admin_app" ng-controller="main_controller">
+    <h1>Administration Page</h1>
+    <div id="main_container">
+        Title: <input ng-model="title" type="text"/>
+        <hr />
+        <div class="image_selection">
+            Main Image: <input type="file" image-model="main_image" image-preview-id="main_image_preview" />
+            <br />
+            <br />
+            <img id="main_image_preview" src="" />
+            <br />
+        </div>
+        <hr />
+        IntroText:
+        <br />
+        <textarea ng-model="intro_text">
+
+        </textarea>
+        
+    </div>
+    
+
+
+
+
+</body>
+</html>

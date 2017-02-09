@@ -28,6 +28,7 @@ test_app.controller("test_controller", function ($scope, $http) {
         var post_data = makeNewBlogPost();
         var files_array = document.getElementById("upload_file_input").files;
         if (files_array.length > 0) {
+            console.log(files_array[0]);
             payload.append('main_image', files_array[0]);
         }
         payload.append('post_data', JSON.stringify(post_data));
@@ -87,16 +88,10 @@ function addButtonEventHandlers() {
 }
 
 function testRandom() {
-    $.ajax({
-        type: "GET",
-        url: "/api/BlogAPI/GetLastNPosts?n=1",
-        async: true,
-        success: function (data) {
-            var posts_array = JSON.parse(data);
-            showPosts(posts_array);
-            //console.log(data);
-        }
-    });
+    var files_array = document.getElementById("upload_file_input").files;
+    if (files_array.length > 0) {
+        console.log(files_array[0]);
+    }
 }
 
 function getAllTags() {
