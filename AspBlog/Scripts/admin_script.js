@@ -22,16 +22,57 @@ admin_app.controller("main_controller", function ($scope, $http) {
             transformRequest: angular.identity
         });
     };
-    $scope.main_image = null;
     
+    // temporary post object to store the current post object
+    $scope.post_temp = {
+        Title: "",
+        Type: "",
+        MainImage_temp: null,
+        IntroText: "",
+        OutroText: "",
+        Ingredients: [
+            { Name: "" }
+        ],
+        Steps_temp: [
+            { Text: "", Image_temp: null }
+        ],
+        Tags: [
+            { TagName: "" }
+        ]
+    }
+
+    $scope.addNewTo = function (collection_name) {
+        switch (collection_name) {
+            case "Ingredients":
+                $scope.post_temp.Ingredients.push({ Name: "" });
+                break;
+            case "Steps":
+                $scope.post_temp.Steps_temp.push({ Text: "", Image_temp: null });
+                break;
+            case "Tags":
+                $scope.post_temp.Tags.push({ TagName: "" });
+            default:
+        };
+    };
+
+    $scope.removeLastFrom = function (collection_name) {
+        var collection = $scope.post_temp[collection_name];
+        if (!collection) return;
+        collection.pop();
+    }
+        
+    $scope.test = function () {
+        console.log($scope.post_temp);
+    }    
 });
 
 admin_app.directive("imageModel", [function () {
+
     var previewImage = function (imageFile, previewId) {
         var reader = new FileReader();
         reader.onload = function (load_event) {
             var preview_elem = document.getElementById(previewId);
-            preview_elem.src = load_event.target.result;
+            preview_elem.src = load_event.target.result;   
             //detect orientation of image
             var w = preview_elem.naturalWidth || preview_elem.width;
             var h = preview_elem.naturalHeight || preview_elem.height;
@@ -39,6 +80,7 @@ admin_app.directive("imageModel", [function () {
         };
         reader.readAsDataURL(imageFile);
     };
+
     return {
         restrict: "A",
         scope: {
@@ -63,13 +105,37 @@ admin_app.directive("imageModel", [function () {
     }
 }]);
 
-
-
-
-
-
-
 function getFormattedDateString() {
-    var date = new Date();
+    const date = new Date();
     return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+}
+
+function buildFinalPostData(post_temp) {
+    return {
+        Title: post_temp.Title.trim(),
+        Date: getFormattedDateString(),
+        Type: post_temp.Type.trim(),
+        MainImageId: post_temp.MainImage_temp ? "exists" : null, //used to detect whether a main image was selected
+        IntroText: post_temp.IntroText.trim(),
+        OutroText: post_temp.OutroText.trim(),
+        Ingredients: post_temp.Ingredients.map(function (ingredient) { return { Name: ingredient.Name.trim() } }),
+        Steps: post_temp.Steps_temp.map(function (step) { return { Text: step.Text.trim()} }),
+        Tags: post_temp.Tags.map(function (tag) { return { TagName: tag.TagName.trim() } })
+    };
+
+};
+
+function addImagesToPayload(post_temp, payload) {
+    payload.append('main_image', post_temp.MainImage_temp);
+    var steps = post_temp.Steps_temp;
+    for (var i = 0; i < steps.length; i++) {
+        if(step.Image_temp !== null) {
+            payload.append('step_image$' + i, step.Image_temp);
+        }
+    }
+    return payload;
+};
+
+function isPostValid(post_temp) {
+    
 }

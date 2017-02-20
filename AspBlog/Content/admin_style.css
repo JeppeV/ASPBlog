@@ -5,3 +5,12 @@
 .image_selection img {
     border: 1px solid black;
 }
+
+#steps_table {
+    border-collapse: collapse;
+}
+
+.step_data {
+   border: 1px solid black; 
+}
+

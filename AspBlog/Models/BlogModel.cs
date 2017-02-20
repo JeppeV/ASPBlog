@@ -43,7 +43,7 @@ namespace AspBlog.Models
             set { steps = value; }
         }
 
-        private ICollection<Tag> tags;
+        private ICollection<Tag> tags { get; set; }
         public ICollection<Tag> Tags
         {
             get { return tags ?? (tags = new List<Tag>()); }
@@ -51,21 +51,11 @@ namespace AspBlog.Models
         }
     }
 
-
-    public class Tag
-    {
-        [Key]
-        public int TagId { get; set; }
-        public string TagName { get; set; }
-        
-    }
-
     public class Ingredient
     {
         [Key]
         public int IngredientId { get; set; }
         public string Name { get; set; }
-        public string Amount { get; set; }
         
     }
 
@@ -76,6 +66,14 @@ namespace AspBlog.Models
         public string Text { get; set; }
         public string StepImageID { get; set; }
         
+    }
+
+    public class Tag
+    {
+        [Key]
+        public int TagId { get; set; }
+        public string TagName { get; set; }
+
     }
 
 

@@ -74,7 +74,6 @@ namespace AspBlog.Controllers
             return jsonResponse;
         }
 
-        //REQUIRES TESTING
         [HttpGet]
         [ActionName("GetPostById")]
         public string GetPostById(int id)
@@ -118,6 +117,7 @@ namespace AspBlog.Controllers
                 string formName = data.Headers.ContentDisposition.Name.Trim('\"');
                 if (formName == "main_image")
                 {
+                    // main image
                     var imageInfo = new TempImageInfo();
                     imageInfo.ImageFilename = data.Headers.ContentDisposition.FileName.Trim('\"');
                     imageInfo.ImageData = await data.ReadAsByteArrayAsync();
@@ -126,8 +126,13 @@ namespace AspBlog.Controllers
                 }
                 else if(formName == "post_data")
                 {
+                    // post data
                     var jsonPost = await data.ReadAsStringAsync();
                     newPost = new JavaScriptSerializer().Deserialize<BlogPost>(jsonPost);
+                }
+                else
+                {
+                    // step image
                 }
                 
             }

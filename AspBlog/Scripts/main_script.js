@@ -26,11 +26,8 @@ blog_app.controller('home_controller', function ($scope, $location, $http) {
     $scope.posts = [];
     $http.get("/api/BlogAPI/GetLastNPosts?n=5")
         .then(function (result) {
-            
             $scope.posts = restoreLineBreaks(angular.fromJson(result.data));
-            console.log($scope.posts[0].IntroText);
             $scope.$parent.access.setContainerHeight(home_post_container_height * $scope.posts.length);
-            
         });
 
     $scope.goToPost = function (postId) {

@@ -88,10 +88,7 @@ function addButtonEventHandlers() {
 }
 
 function testRandom() {
-    var files_array = document.getElementById("upload_file_input").files;
-    if (files_array.length > 0) {
-        console.log(files_array[0]);
-    }
+    console.log($('#add_post_ingredients_input').val().trim().split(","));
 }
 
 function getAllTags() {
@@ -109,7 +106,7 @@ function getAllTags() {
 function makeNewBlogPost() {
     var title = $('#add_post_title_input').val().trim();
     var intro_text = $('#add_post_intro_input').val().trim();
-    var ingredients = $('#add_post_ingredients_input').val().trim().split(",").map(function(tag) {return { Name: tag.trim(), Amount: "Test mængde"};});
+    var ingredients = $('#add_post_ingredients_input').val().trim().split(",").map(function (ingredient) { return { Name: ingredient.trim() } });
     var steps = $('#add_post_steps_input').val().trim().split(",").map(function (step) { return { Text: step.trim() } });
     var tags = $('#add_post_tags_input').val().trim().split(",").map(function (tag) { return { TagName: tag.trim() } });
     return {
