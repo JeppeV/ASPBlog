@@ -34,7 +34,7 @@
         <div id="ingredients_container">
             <ul id="ingredient_list" >
                 <li ng-repeat="ingredient in post_temp.Ingredients">
-                    <input class="ingredient_input" type="text" ng-model="ingredient.Name" />
+                    <input class="ingredient_input" type="text" ng-model="ingredient.Text" />
                 </li>
                 <li>
                     <button ng-click="addNewTo('Ingredients')">Add</button>
@@ -51,7 +51,7 @@
                         <input class="step_input" type="text" ng-model="step.Text" />
                         <br />
                         <br />
-                        <input type="file" image-model="step.ImageInfo_temp" image-preview-id="step_image_preview_{{$index}}" />
+                        <input type="file" image-model="step.Image_temp" image-preview-id="step_image_preview_{{$index}}" />
 
                         <br />
                         
@@ -74,7 +74,7 @@
         <div id="tags_container">
             <ul id="tags_list">
                 <li ng-repeat="tag in post_temp.Tags">
-                    <input class="tag_input" type="text" ng-model="tag.TagName" />
+                    <input class="tag_input" type="text" ng-model="tag.Text" />
                 </li>
                 <li>
                     <button ng-click="addNewTo('Tags')">Add</button>

@@ -55,7 +55,7 @@ namespace AspBlog.Models
     {
         [Key]
         public int IngredientId { get; set; }
-        public string Name { get; set; }
+        public string Text { get; set; }
         
     }
 
@@ -72,7 +72,7 @@ namespace AspBlog.Models
     {
         [Key]
         public int TagId { get; set; }
-        public string TagName { get; set; }
+        public string Text { get; set; }
 
     }
 

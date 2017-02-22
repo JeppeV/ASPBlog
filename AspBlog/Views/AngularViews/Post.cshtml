@@ -16,10 +16,36 @@
         <div id="post_ingredients">
             <ul id="post_ingredients_list">
                 <li class="post_ingredient post_text" ng-repeat="ingredient in post.Ingredients">
-                    {{ingredient.Name}}
+                    {{ingredient.Text}}
                 </li>
             </ul>
         </div>
+
+        <div id="post_steps_header">
+            Steps
+        </div>
     
+        <div id="post_steps">
+            <ol id="post_steps_list">
+                <li class="post_step post_text " ng-repeat="step in post.Steps">
+                    <div>{{step.Text}}</div>
+                    <div ng-if="step.StepImageID" class="step_image_container">
+                        <img ng-src="/Home/Image/?imageID={{step.StepImageID}}"/>
+                    </div>
+                    
+                </li>
+            </ol>
+        </div>
+
+        <div id="post_outro" class="post_text text_formatting">{{post.OutroText}}</div>
+
+        <div id="post_tags" class="post_text">
+            <a ng-repeat="tag in post.Tags" href="#{{tag.Text}}">
+                {{tag.Text}}<span ng-if="$index < post.Tags.length-1">, </span>
+            </a> 
+            
+            
+        </div>
+
     </div>
 </div>

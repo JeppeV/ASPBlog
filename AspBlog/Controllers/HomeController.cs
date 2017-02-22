@@ -21,12 +21,6 @@ namespace AspBlog.Controllers
         {
             return View("Admin");
         }
-        
-        /* /Home/Test */
-        public ActionResult Test()
-        {
-            return View("Test");
-        }
 
         /* TODO: Add input validation for safety */
         public ActionResult Image(string imageID)

@@ -145,11 +145,9 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\main_script.js" />
     <Content Include="Scripts\admin_script.js" />
-    <Content Include="Scripts\test_script.js" />
     <None Include="Views\AngularViews\Home.cshtml" />
     <Content Include="Views\AngularViews\Post.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
-    <None Include="Views\Home\Test.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
     <None Include="Views\AngularViews\Contact.cshtml" />
     <Content Include="Web.config" />

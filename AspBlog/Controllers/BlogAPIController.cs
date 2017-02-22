@@ -49,7 +49,7 @@ namespace AspBlog.Controllers
                     var contains_all_tags = true;
                     foreach (string search_tag in search_tags)
                     {
-                        contains_all_tags &= post.Tags.Select(p => p.TagName).Contains(search_tag);
+                        contains_all_tags &= post.Tags.Select(p => p.Text).Contains(search_tag);
                     }
                     if (contains_all_tags) resultPosts.Add(post);
                         
@@ -133,6 +133,12 @@ namespace AspBlog.Controllers
                 else
                 {
                     // step image
+                    var imageInfo = new TempImageInfo();
+                    imageInfo.ImageContentName = formName;
+                    imageInfo.ImageFilename = data.Headers.ContentDisposition.FileName.Trim('\"');
+                    imageInfo.ImageData = await data.ReadAsByteArrayAsync();
+                    imageInfo.IsMainImage = false;
+                    imageInfos.Add(imageInfo);
                 }
                 
             }
@@ -145,7 +151,10 @@ namespace AspBlog.Controllers
                 }
                 else
                 {
-                    //TODO: step images
+                    
+                    var stepIndex = int.Parse(imageInfo.ImageContentName.Split('%')[1]);
+                    
+                    newPost.Steps.ElementAt(stepIndex).StepImageID = saveImage(newPost, imageInfo);
                 }
             }
             
@@ -160,6 +169,7 @@ namespace AspBlog.Controllers
 
         private class TempImageInfo
         {
+            public string ImageContentName { get; set; }
             public string ImageFilename { get; set; }
             public byte[] ImageData { get; set; }
             public bool IsMainImage { get; set; }
@@ -184,8 +194,9 @@ namespace AspBlog.Controllers
                 return post.Title + @"\main." + extension;
             }
             else
-            {   //TODO
-                return post.Title + @"\Steps\step#x." + extension;
+            {
+                var stepIndex = int.Parse(imageInfo.ImageContentName.Split('%')[1]);
+                return post.Title + @"\Steps\step$" + stepIndex + "." + extension;
             }
         }
 

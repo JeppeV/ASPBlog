@@ -49,6 +49,7 @@ blog_app.filter('text_length_filter', function () {
 
 blog_app.controller('post_controller', function ($scope, $routeParams, $http, $timeout) {
     $scope.post = {};
+
     $http.get("api/BlogAPI/GetPostById?id=" + $routeParams.postId)
         .then(function (result) {
             $scope.post = angular.fromJson(result.data);
@@ -58,6 +59,14 @@ blog_app.controller('post_controller', function ($scope, $routeParams, $http, $t
             }, 0);
             
         });
+    $scope.getTagsAsString = function (tags) {
+        var result = "";
+        for (var i = 0; i < tags.length - 1; i++) {
+            result += tags[i].Text + ", ";
+        }
+        result += tags[tags.length - 1].Text;
+        return result;
+    }
 });
 
 function restoreLineBreaks(posts) {

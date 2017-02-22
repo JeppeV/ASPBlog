@@ -12,10 +12,10 @@
 </head>
 <body ng-app="blog_app" ng-controller="main_controller">
 
-    <div id="header" class="main_element">
-        <div id="header_title">{{title}}</div>
-        <div id="header_menu_wrapper">
-            <ul id="header_menu">
+    <div id="main_header" class="main_element">
+        <div id="main_header_title">{{title}}</div>
+        <div id="main_header_menu_wrapper">
+            <ul id="main_header_menu">
                 <li ng-repeat="entry in header_entries" ng-click="changeView(entry)">
                     {{entry}} 
                 </li>
@@ -25,11 +25,11 @@
         
     </div>
 
-    <div id="container" ng-style="{height: container_height + 'px'}">
-        <div id="container_view" class="main_element" ng-view>
+    <div id="main_container" ng-style="{height: container_height + 'px'}">
+        <div id="main_container_view" class="main_element" ng-view>
 
         </div>
-        <div id="container_menu" class="main_element">
+        <div id="main_container_menu" class="main_element">
 
         </div>
     </div>
