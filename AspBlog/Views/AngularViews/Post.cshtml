@@ -1,7 +1,14 @@
 ﻿<div id="container_inner" ng-controller="post_controller">
     <div id="post_container">
 
-        <div id="post_header">{{post.Title}}</div>
+        <div id="post_header">
+            <div id="post_header_title" class="fill_parent" >
+                {{post.Title}}
+            </div>
+            <div id="post_header_type" class="fill_parent" >
+                {{post.Type}}
+            </div>
+        </div>
 
         <div id="post_intro" class="post_text text_formatting">{{post.IntroText}}</div>
 

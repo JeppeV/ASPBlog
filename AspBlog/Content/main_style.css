@@ -124,15 +124,16 @@
 
 
 
-/* /AngularViews/Home */
+/* /AngularViews/List */
 
-.home_post_container {
+
+.list_post_container {
     position: relative;
     width: 100%;
     height:500px;
 }
 
-.home_post_container:before {
+.list_post_container:before {
   content : "";
   position: absolute;
   left    : 0%;
@@ -142,7 +143,7 @@
   border-bottom:1px solid #094ebc;
 }
 
-.home_post_header {
+.list_post_header {
     position: absolute;
     left: 60%;
     top: 20px;
@@ -155,7 +156,7 @@
     font-size: 32px;
 }
 
-.home_post_header:before {
+.list_post_header:before {
   content : "";
   position: absolute;
   left    : 15%;
@@ -165,16 +166,16 @@
   border-bottom:1px solid #094ebc;
 }
 
-.home_post_header a {
+.list_post_header a {
     cursor: pointer;
     text-decoration: none;
 }
 
-.home_post_header a:link, a:visited {
+.list_post_header a:link, a:visited {
     color: black;
 }
 
-.home_post_image_container {
+.list_post_image_container {
     position: absolute;
     left: 0%;
     top: 0%;
@@ -182,7 +183,7 @@
     height: 100%;
 }
 
-.home_post_image_container img {
+.list_post_image_container img {
     position: absolute;
     left: 2%;
     top: 2%;
@@ -191,7 +192,7 @@
     cursor: pointer;
 }
 
-.home_post_intro {
+.list_post_intro {
     position: absolute;
     left: 63%;
     top: 60px;
@@ -202,7 +203,7 @@
     
 }
 
-.home_post_goto {
+.list_post_goto {
     position: absolute;
     left: 63%;
     top: 425px;
@@ -240,11 +241,26 @@
     top: 0%;
     width: 90%;
     height: 120px;
-    text-align: center;
-    vertical-align: middle;
-    line-height:120px;
-    font-size: 45px;
     border-bottom: 1px solid black;
+}
+
+#post_header_title {
+    height: 80px;
+    text-align: center;
+    vertical-align: bottom;
+    line-height:80px;
+    font-size: 44px;
+}
+
+#post_header_type {
+    top: 70px;
+    height: 60px;
+    text-align: center;
+    vertical-align: top;
+    font-size: 26px;
+    font-style: italic;
+    color: #53565b;
+    
 }
 
 #post_intro {

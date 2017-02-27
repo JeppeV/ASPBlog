@@ -9,9 +9,9 @@ namespace AspBlog.Controllers
     public class AngularViewsController : Controller
     {
         // GET: AngularViews
-        public ActionResult Home()
+        public ActionResult List()
         {
-            return View("Home");
+            return View("List");
         }
 
         public ActionResult Contact()

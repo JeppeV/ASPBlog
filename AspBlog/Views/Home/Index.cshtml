@@ -16,8 +16,8 @@
         <div id="main_header_title">{{title}}</div>
         <div id="main_header_menu_wrapper">
             <ul id="main_header_menu">
-                <li ng-repeat="entry in header_entries" ng-click="changeView(entry)">
-                    {{entry}} 
+                <li ng-repeat="entry in header_entries" ng-click="changeView(entry.View)">
+                    {{entry.Title}} 
                 </li>
 
             </ul>

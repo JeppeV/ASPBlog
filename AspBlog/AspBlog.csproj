@@ -145,7 +145,7 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\main_script.js" />
     <Content Include="Scripts\admin_script.js" />
-    <None Include="Views\AngularViews\Home.cshtml" />
+    <None Include="Views\AngularViews\List.cshtml" />
     <Content Include="Views\AngularViews\Post.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
