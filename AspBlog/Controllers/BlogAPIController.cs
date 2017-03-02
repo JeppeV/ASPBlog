@@ -100,6 +100,21 @@ namespace AspBlog.Controllers
             return jsonResponse;
         }
 
+        // TODO : test
+        [HttpGet]
+        [ActionName("GetAllTypes")]
+        public string getAllTypes()
+        {
+            List<string> resultTypes;
+            using (var context = new BlogModelContext())
+            {
+                var posts = context.BlogPosts;
+                resultTypes = posts.Select(p => p.Type).Distinct().ToList();
+            }
+            var jsonResponse = getJSON(resultTypes);
+            return jsonResponse;
+        }
+
         
         [HttpPost]
         [ActionName("AddPost")]

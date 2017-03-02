@@ -2,22 +2,27 @@
 
 var blog_app = angular.module("blog_app", ["ngRoute"]);
 
-blog_app.controller('main_controller', function ($scope, $location) {
+blog_app.controller('main_controller', function ($scope, $location, $http) {
     
     $scope.title = "Food Blog";
-    $scope.header_entries = [{ Title: "Home", View: "List" }, { Title: "Recipes", View: "Recipes" }, { Title: "Contact", View: "Contact" }];
-    $scope.changeView = function (view_name) {
-        $location.url("/" + view_name);
-    };
+    $scope.header_entries_text = ["Home", "Recipes", "Contact"];
+    $scope.types = [];
+    $http.get("/api/BlogAPI/GetAllTypes")
+        .then(function (result) {
+            $scope.types = angular.fromJson(result.data);
+            console.log($scope.types);
+        });
 
     $scope.container_height = 0;
     $scope.access = {
         setContainerHeight: function (height) {
             $scope.container_height = height;
-        }
-        
+        }  
     };
-    
+
+    $scope.changeView = function (view_id) {
+        $location.url("/" + view_id);
+    };
 });
 
 
@@ -70,11 +75,12 @@ blog_app.filter('text_length_filter', function () {
 
 
 blog_app.config(function ($routeProvider) {
+    $routeProvider.caseInsensitiveMatch = true;
     $routeProvider
     .when("/", {
         templateUrl: "/AngularViews/List"
     })
-    .when("/List", {
+    .when("/Home", {
         templateUrl: "/AngularViews/List"
     })
     .when("/Contact", {

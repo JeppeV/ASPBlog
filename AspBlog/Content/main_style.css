@@ -35,7 +35,7 @@
     top: 0%;
     width: 100%;
     height: 120px;
-    z-index: 1;
+    z-index: 3;
     
     
 }
@@ -74,7 +74,7 @@
     width: 100%;
     height: 100%;
     
-    
+
 }
 
 #main_header_menu li {
@@ -86,10 +86,40 @@
     width: 32%;
     cursor: pointer;
     transition: 0.3s;
+    z-index: 1;
 }
 
 #main_header_menu li:hover {
     background: #f2f2f2;
+}
+
+#main_header_menu_entry_recipes {
+    cursor: default;
+
+}
+
+#main_header_menu_entry_recipes:hover div {
+    visibility: visible;
+    top: 99%;
+}
+
+#main_header_menu_entry_recipes_dropdown {
+    position: absolute;
+    top: -100%;
+    z-index: -1;
+    visibility: hidden;
+    width: 32%;
+    -webkit-box-shadow: 0px 3px 3px 0px black;
+    -moz-box-shadow: 0px 3px 3px 0px black;
+    box-shadow: 0px 3px 3px 0px black;
+    -webkit-transition: visibility 0s, top 1s;
+    transition: visibility 0s linear 1s, top 1s;
+}
+
+
+.main_header_menu_entry_recipes_dropdown_item:hover {
+    background: #f2f2f2;
+    display: block;
 }
 
 #main_container {
@@ -101,15 +131,12 @@
     
 }
 
-
-
 #main_container_view {
     position: absolute;
     left: 0%;
     top: 0%;
     width: 72%;
     height: inherit;
-    
 }
 
 #main_container_menu {

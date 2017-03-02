@@ -16,10 +16,20 @@
         <div id="main_header_title">{{title}}</div>
         <div id="main_header_menu_wrapper">
             <ul id="main_header_menu">
-                <li ng-repeat="entry in header_entries" ng-click="changeView(entry.View)">
-                    {{entry.Title}} 
+                <li id="main_header_menu_entry_home" ng-click="changeView('Home')">
+                    {{header_entries_text[0]}}
                 </li>
-
+                <li id="main_header_menu_entry_recipes">
+                    {{header_entries_text[1]}}
+                    <div id="main_header_menu_entry_recipes_dropdown" class="main_element">
+                        <div ng-repeat="type in types"  class="main_header_menu_entry_recipes_dropdown_item">
+                            {{type}}
+                        </div>
+                    </div>
+                </li>
+                <li id="main_header_menu_entry_contact" ng-click="changeView('Contact')">
+                    {{header_entries_text[2]}}
+                </li>
             </ul>
         </div>
         
