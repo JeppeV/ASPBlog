@@ -25,16 +25,34 @@ namespace AspBlog.Controllers
         public string GetAllPosts()
         {
             List<BlogPost> resultPosts;
-            using(var context = new BlogModelContext())
+            using (var context = new BlogModelContext())
             {
                 resultPosts = getFullBlogPostQuery(context).ToList();
-                
+
             }
             var jsonResponse = getJSON(resultPosts);
             return jsonResponse;
         }
 
-        
+        [HttpGet]
+        [ActionName("GetPostsByType")]
+        public string GetPostsByType(string type_json)
+        {
+            string type = new JavaScriptSerializer().Deserialize<string>(type_json);
+            List<BlogPost> resultPosts = new List<BlogPost>();
+            using(var context = new BlogModelContext())
+            {
+                foreach(BlogPost post in getFullBlogPostQuery(context))
+                {
+                    if(post.Type == type)
+                    {
+                        resultPosts.Add(post);
+                    }
+                }
+            }
+            var jsonResponse = getJSON(resultPosts);
+            return jsonResponse;
+        }
 
         [HttpGet]
         [ActionName("GetPostsByTags")]
@@ -100,7 +118,6 @@ namespace AspBlog.Controllers
             return jsonResponse;
         }
 
-        // TODO : test
         [HttpGet]
         [ActionName("GetAllTypes")]
         public string getAllTypes()

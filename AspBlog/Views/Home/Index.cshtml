@@ -15,14 +15,14 @@
     <div id="main_header" class="main_element">
         <div id="main_header_title">{{title}}</div>
         <div id="main_header_menu_wrapper">
-            <ul id="main_header_menu">
+            <ul id="main_header_menu" class="fill_parent">
                 <li id="main_header_menu_entry_home" ng-click="changeView('Home')">
                     {{header_entries_text[0]}}
                 </li>
                 <li id="main_header_menu_entry_recipes">
                     {{header_entries_text[1]}}
                     <div id="main_header_menu_entry_recipes_dropdown" class="main_element">
-                        <div ng-repeat="type in types"  class="main_header_menu_entry_recipes_dropdown_item">
+                        <div ng-repeat="type in types"  class="main_header_menu_entry_recipes_dropdown_item" ng-click="changeView('Home/Type/' + type)">
                             {{type}}
                         </div>
                     </div>
@@ -36,11 +36,31 @@
     </div>
 
     <div id="main_container" ng-style="{height: container_height + 'px'}">
+        
         <div id="main_container_view" class="main_element" ng-view>
 
         </div>
-        <div id="main_container_menu" class="main_element">
 
+        <div id="main_container_menu" class="main_element">
+            <div id="main_container_menu_tags">
+                <div id="main_tags_header_unselected">
+                    Search using Tags:
+                </div>
+                <div id="main_tags_listing_unselected">
+                    <div class="main_tags_unselected" ng-repeat="tag in tags.unselected" ng-click="tags.select($index)">
+                        {{tag}}
+                    </div>
+                </div>
+                <div id="main_tags_header_selected">
+                    Selected Tags:
+                </div>
+                <div id="main_tags_listing_selected">
+                    <div class="main_tags_selected" ng-repeat="tag in tags.selected" ng-click="tags.unselect($index)">
+                        {{tag}}
+                        &#10006
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

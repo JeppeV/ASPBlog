@@ -47,7 +47,7 @@
         <div id="post_outro" class="post_text text_formatting">{{post.OutroText}}</div>
 
         <div id="post_tags" class="post_text">
-            <a ng-repeat="tag in post.Tags" href="#{{tag.Text}}">
+            <a ng-repeat="tag in post.Tags" ng-click="changeView('Home/Tags/' + tag.Text)">
                 {{tag.Text}}<span ng-if="$index < post.Tags.length-1">, </span>
             </a> 
             
