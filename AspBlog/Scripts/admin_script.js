@@ -53,10 +53,7 @@ admin_app.controller("main_controller", function ($scope, $http) {
         var collection = $scope.post_temp[collection_name];
         if (collection) collection.pop();
     }
-        
-    $scope.test = function () {
-        $scope.addPost();
-    }    
+          
 });
 
 admin_app.directive("imageModel", [function () {
