@@ -1,11 +1,4 @@
-﻿using System.IO;
-using System.Web.Mvc;
-using System.Web.Helpers;
-using System.Web.Script.Serialization;
-using System.Collections.Generic;
-using System.Web.Services;
-using AspBlog.Models;
-using System;
+﻿using System.Web.Mvc;
 
 namespace AspBlog.Controllers
 {
@@ -17,12 +10,14 @@ namespace AspBlog.Controllers
             return View("Index");
         }
 
+        /* /Home/Admin */
         public ActionResult Admin()
         {
             return View("Admin");
         }
 
         /* TODO: Add input validation for safety */
+        /* /Home/Image/imageID */
         public ActionResult Image(string imageID)
         {
             string extension = Utility.getFileExtension(imageID);

@@ -12,7 +12,7 @@ blog_app.controller('main_controller', function ($scope, $location, $http) {
         unselected: [],
         selected: [],
         init: function (tags) {
-            this.all = tags.map((t) => t.Text);
+            this.all = tags;
             // use slice to copy array
             this.unselected = this.all.slice();
         },
@@ -49,11 +49,13 @@ blog_app.controller('main_controller', function ($scope, $location, $http) {
     }
     $http.get("/api/BlogAPI/GetAllTypes")
         .then(function (result) {
+            console.log(result.data);
             $scope.types = angular.fromJson(result.data);
         });
 
     $http.get("/api/BlogAPI/GetAllTags")
        .then(function (result) {
+           console.log(result.data);
            $scope.tags.init(angular.fromJson(result.data));
            
        });

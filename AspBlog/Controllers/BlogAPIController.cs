@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using AspBlog.Models;
-using Newtonsoft.Json.Linq;
 using System.Web.Script.Serialization;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity;
 using System.Web;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
 using System.IO;
 
 namespace AspBlog.Controllers
@@ -27,7 +24,7 @@ namespace AspBlog.Controllers
             List<BlogPost> resultPosts;
             using (var context = new BlogModelContext())
             {
-                resultPosts = getFullBlogPostQuery(context).ToList();
+                resultPosts = getFullBlogPostQuery(context).OrderByDescending(p => convertDateStringToDateTime(p.Date)).ToList();
 
             }
             var jsonResponse = getJSON(resultPosts);
@@ -50,6 +47,7 @@ namespace AspBlog.Controllers
                     }
                 }
             }
+            resultPosts = resultPosts.OrderByDescending(p => convertDateStringToDateTime(p.Date)).ToList();
             var jsonResponse = getJSON(resultPosts);
             return jsonResponse;
         }
@@ -73,6 +71,7 @@ namespace AspBlog.Controllers
                         
                 }
             }
+            resultPosts = resultPosts.OrderByDescending(p => convertDateStringToDateTime(p.Date)).ToList();
             var jsonResponse = getJSON(resultPosts);
             return jsonResponse;
         }
@@ -109,10 +108,11 @@ namespace AspBlog.Controllers
         [ActionName("GetAllTags")]
         public string getAllTags()
         {
-            List<Tag> resultTags;
+            List<string> resultTags;
             using (var context = new BlogModelContext())
             {
-                resultTags = context.Tags.ToList();
+                var tags = context.Tags;
+                resultTags = tags.Select(t => t.Text).Distinct().ToList();
             }
             var jsonResponse = getJSON(resultTags);
             return jsonResponse;
