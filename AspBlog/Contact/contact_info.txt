@@ -1,0 +1,4 @@
+﻿Jeppe Vinberg
+25
+Jeppevinberg@gmail.com
+Jeg hedder Jeppe Vinberg og jeg læser Datalogi på Aarhus Universitet. Jeg har lavet denne blog som en opfølgning på et kursus kaldet GUI Programmering, hvor vi lærte om ASP.Net frameworket. Det tænkte jeg at jeg ville prøve at lave noget med, så her er resultatet. Udover ASP, så har jeg brugt en smule AngularJS, som jeg altid gerne har ville blive mere bekendt med. Det viste sig at være perfekt til at lave databinding for de informationer jeg fik hentet på JSON format fra min backend. Planen er desuden at jeg vil benytte bloggen til at akkumulere billige og sunde retter, som jeg lærer at lave løbende. Tak for besøget! Mvh, Jeppe.

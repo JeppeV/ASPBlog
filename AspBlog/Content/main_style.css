@@ -1,12 +1,10 @@
 ﻿body {
-    background: #cccccc;
+    background-color: white;
+    font-size: 0.9em;
 }
 
 .main_element {
     background: white;
-    -webkit-box-shadow: 0px 0px 3px 1px black;
-    -moz-box-shadow: 0px 0px 3px 1px black;
-    box-shadow: 0px 0px 3px 1px black;
 }
 
 .fill_parent {
@@ -34,8 +32,11 @@
     left: 0%;
     top: 0%;
     width: 100%;
+    min-width:1000px;
     height: 120px;
     z-index: 1;
+    border-bottom: 1px solid #094ebc;
+    background-color: rgba(255, 255, 255, .8);
     
     
 }
@@ -48,7 +49,7 @@
     text-align: center;
     vertical-align: middle;
     line-height:60px;
-    font-size: 45px;
+    font-size: 3em;
     
 }
 
@@ -73,54 +74,45 @@
 
 #main_header_menu li {
     position: relative;
-    background: white;
     display: inline-block;
     height: 58px;
     line-height: 60px;
-    font-size: 28px;
+    font-size: 2em;
     width: 32%;
     cursor: pointer;
     transition: 0.3s;
+
 }
 
 #main_header_menu li:hover {
-    background: #f2f2f2;
+    background-color: rgba(255, 255, 255, 1);
 }
 
 
 #main_header_menu_entry_recipes:hover #main_header_menu_entry_recipes_dropdown {
     position: absolute;
     visibility: visible;
-    top: 99%;
     width: 100%;
-     z-index: 1;
-
-    -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
-    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
+    
 }
 
 #main_header_menu_entry_recipes_dropdown {
     position: absolute;
     visibility:hidden;
     left: 0%;
-    top: -100%;
+    top: 100%;
     width: 100%;
-    z-index: -1;
-    -webkit-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
-    -moz-box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
-    box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.75);
+    z-index: 1;
+    border: 1px solid #094ebc;
+    border-top: none;
+    margin-top: 1px;
 
-    /*
-        buggy slide down effect for dropdown
 
-        -webkit-transition: visibility 1s linear 0s, top 1s;
-        transition: visibility 1s linear 0s, top 1s;
-    */
 }
 
 .main_header_menu_entry_recipes_dropdown_item {
     border-bottom: solid black 1px;
+    font-size: 0.8em;
 }
 
 .main_header_menu_entry_recipes_dropdown_item:last-child {
@@ -131,12 +123,16 @@
     background-color: #f2f2f2;
 }
 
+
+
 #main_container {
     position: relative;
     margin: 0 auto;
     margin-top: 140px;
-    width: 1600px;
+    min-width: 1200px;
+    width: 1400px;
     max-width: 80%;
+    
     
 }
 
@@ -144,15 +140,15 @@
     position: absolute;
     left: 0%;
     top: 0%;
-    width: 72%;
+    width: 80%;
     height: inherit;
 }
 
 #main_container_menu {
     position: absolute;
-    left: 75%;
+    left: 85%;
     top: 0%;
-    width: 25%;
+    width: 15%;
     height: inherit;
     
 
@@ -236,39 +232,7 @@
   bottom  : 0;
   height  : 1px;
   width   : 100%;
-  border-bottom:1px solid #094ebc;
-}
-
-.list_post_header {
-    position: absolute;
-    left: 60%;
-    top: 20px;
-    width: 40%;
-    height: 50px;
-    margin: 0;
-    text-align: center;
-    vertical-align: middle;
-    line-height:50px;
-    font-size: 32px;
-}
-
-.list_post_header:before {
-  content : "";
-  position: absolute;
-  left    : 15%;
-  bottom  : 0;
-  height  : 1px;
-  width   : 70%;
-  border-bottom:1px solid #094ebc;
-}
-
-.list_post_header a {
-    cursor: pointer;
-    text-decoration: none;
-}
-
-.list_post_header a:link, a:visited {
-    color: black;
+  border-bottom: 1px solid #094ebc;
 }
 
 .list_post_image_container {
@@ -281,35 +245,67 @@
 
 .list_post_image_container img {
     position: absolute;
-    left: 2%;
+    left: 0%;
     top: 2%;
-    width: 96%;
+    width: 100%;
     height: 96%;
     cursor: pointer;
 }
 
+.list_post_header {
+    position: absolute;
+    left: 60%;
+    top: 0%;
+    width: 40%;
+    height: 50px;
+    margin: 0;
+    text-align: center;
+    vertical-align: middle;
+    line-height:50px;
+    font-size: 2.5em;
+}
+
+.list_post_header:before {
+  content : "";
+  position: absolute;
+  left    : 5%;
+  bottom  : 0%;
+  height  : 1px;
+  width   : 90%;
+  border-bottom: 1px solid #094ebc;
+}
+
+.list_post_header a {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.list_post_header a:link, a:visited {
+    color: black;
+}
+
 .list_post_intro {
     position: absolute;
-    left: 63%;
-    top: 60px;
-    width: 34%;
+    left: 62%;
+    top: 35px;
+    width: 38%;
     height: 350px;
-    font-size: 24px;
+    font-size: 1.3em;
     line-height: 25px;
     
 }
 
 .list_post_goto {
     position: absolute;
-    left: 63%;
-    top: 425px;
-    width: 34%;
+    left: 62%;
+    bottom: 2%;
+    width: 36%;
     height: 40px;
     background: #094ebc;
     text-align: center;
     vertical-align: middle;
     line-height:35px;
-    font-size: 18px;
+    font-size: 1.4em;
     color: white;
     border-radius: 2px;
     cursor: pointer;
@@ -319,9 +315,9 @@
 /* /AngularViews/Post */
 
 .post_text {
-    font-size: 24px;
+    font-size: 1.6em;
     line-height: 30px;
-    color: #094ebc;
+    color: black;
 }
 
 #post_container {
@@ -332,12 +328,13 @@
 }
 
 #post_header {
+    
     position: relative;
-    left: 5%;
+    left: 0%;
     top: 0%;
-    width: 90%;
+    width: 100%;
     height: 120px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #094ebc;
 }
 
 #post_header_title {
@@ -345,7 +342,7 @@
     text-align: center;
     vertical-align: bottom;
     line-height:80px;
-    font-size: 44px;
+    font-size: 3.5em;
 }
 
 #post_header_type {
@@ -353,7 +350,7 @@
     height: 60px;
     text-align: center;
     vertical-align: top;
-    font-size: 26px;
+    font-size: 1.8em;
     font-style: italic;
     color: #53565b;
     
@@ -361,15 +358,15 @@
 
 #post_intro {
     position: relative;
-    left: 5%;
-    width: 90%;
+    left: 0%;
+    top: 10px;
+    width: 100%;
 }
 
 #post_image_container {
-    
     position: relative;
-    left: 5%;
-    width: 90%;
+    left: 0%;
+    width: 100%;
     height: 700px;
 }
 
@@ -385,21 +382,21 @@
 #post_ingredients_header {
     
     position: relative;
-    left: 5%;
+    left: 0%;
     top: 0%;
-    width: 90%;
+    width: 100%;
     height: 50px;
     line-height: 50px;
-    font-size: 34px;
+    font-size: 2.2em;
     vertical-align: middle;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #094ebc;
 }
 
 #post_ingredients {
     position: relative;
-    left: 4%;
+    left: -1%;
     top: 0%;
-    width: 92%;
+    width: 100%;
 }
 
 
@@ -413,24 +410,23 @@
 #post_steps_header {
     
     position: relative;
-    left: 5%;
+    left: 0%;
     top: 0%;
-    width: 90%;
+    width: 100%;
     height: 50px;
     line-height: 50px;
-    font-size: 34px;
+    font-size: 2.2em;
     vertical-align: middle;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #094ebc;
 }
 
 #post_steps {
     position: relative;
-    left: 4%;
+    left: -1%;
     top: 0%;
-    width: 92%;
-    border-bottom: 1px solid black;
+    width: 100%;
+    border-bottom: 1px solid #094ebc;
 }
-
 
 .post_step {
     position: relative;
@@ -457,29 +453,62 @@
 
 #post_outro {
     position: relative;
-    left: 5%;
-    width: 90%;
+    left: 0%;
+    width: 100%;
     padding: 2% 0 2% 0;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #094ebc;
 }
 
 #post_tags {
     position: relative;
-    left: 5%;
-    width: 90%;
-    font-size: 20px;
+    left: 0%;
+    width: 100%;
+    font-size: 1.3em;
     line-height: 30px;
-    color: #094ebc;
+    color: #27408B;
     font-style: italic;
     display: inline-block;
 }
 
 #post_tags a {
-    text-decoration: none;
     cursor: pointer;
 }
 
 
+/* /AngularViews/Contact */
 
+#contact_image_container {
+    
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    width: 50%;
+    height: 100%;
+    text-align: center;
+    border-right: 2px solid black;
+}
 
+#contact_image_container img {
+    width: auto;
+    height: 100%;
+    max-height: 100%;
+}
 
+#contact_info_list_container {
+    position: relative;
+    left: 50%;
+    width: 50%;
+    font-size: 2em;
+    
+}
+
+#contact_info_list_container li {
+    margin: 10px
+}
+
+#contact_info_text_container {
+    position: relative;
+    left: 52%;
+    width: 46%;
+    font-size: 1.4em;
+}

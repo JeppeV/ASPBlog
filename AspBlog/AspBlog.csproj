@@ -140,6 +140,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Contact\contact_info.txt" />
+    <Content Include="Contact\contact_image.jpg" />
     <Content Include="Content\admin_style.css" />
     <Content Include="Content\main_style.css" />
     <Content Include="Global.asax" />

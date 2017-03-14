@@ -254,16 +254,42 @@ namespace AspBlog.Controllers
             return context.BlogPosts.Include("Ingredients").Include("Steps").Include("Tags");
         }
 
-        
+        [HttpGet]
+        [ActionName("GetContactInfo")]
+        public string GetContactInfo()
+        {
+            var contact_info_path = HttpContext.Current.Server.MapPath("~") + @"Contact\contact_info.txt";
+            var contactInfo = new ContactInfo();
+            using (StreamReader sr = new StreamReader(contact_info_path))
+            {
+                contactInfo.Name = sr.ReadLine();
+                contactInfo.Age = sr.ReadLine();
+                contactInfo.Email = sr.ReadLine();
+                contactInfo.Text = sr.ReadLine();
+            }
+            var jsonResponse = getJSON(contactInfo);
+            return jsonResponse;
+        }
 
-        
+        private class ContactInfo
+        {
+            public string Name { get; set; }
+            public string Age { get; set; }
+            public string Email { get; set; }
+            public string Text { get; set; }
+        }
 
-        
 
-        
-        
 
-        
+
+
+
+
+
+
+
+
+
     }
 
 

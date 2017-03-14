@@ -16,12 +16,19 @@ namespace AspBlog.Controllers
             return View("Admin");
         }
 
-        /* TODO: Add input validation for safety */
         /* /Home/Image/imageID */
         public ActionResult Image(string imageID)
         {
+            if (imageID.Contains("..")) return null;
+            if (imageID.Split('\\').Length > 3) return null;
             string extension = Utility.getFileExtension(imageID);
             return File(pathToImage(imageID), "image/"+ extension);
+        }
+
+        /* /Home/ContactImage */
+        public ActionResult ContactImage()
+        {
+            return File(Server.MapPath("~") + @"Contact\contact_image.jpg", "image/jpg");
         }
 
         private string pathToImage(string imageID)

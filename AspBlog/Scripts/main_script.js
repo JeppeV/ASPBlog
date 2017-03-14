@@ -44,7 +44,7 @@ blog_app.controller('main_controller', function ($scope, $location, $http) {
                 tagsString += this.selected[i] + ",";
             }
             tagsString += this.selected[this.selected.length - 1];
-            $scope.changeView('Home/Tags/' + tagsString);
+            $scope.showPostsByTags(tagsString);
         }
     }
     $http.get("/api/BlogAPI/GetAllTypes")
@@ -73,6 +73,10 @@ blog_app.controller('main_controller', function ($scope, $location, $http) {
         $location.url("/" + view_id);
     };
 
+    $scope.showPostsByTags = function (tag) {
+        $scope.changeView("Home/Tags/" + tag);
+    }
+
     
 });
 
@@ -83,11 +87,10 @@ blog_app.controller('list_controller', function ($scope, $location, $routeParams
     $scope.posts = [];
     if ($routeParams.tags) {
         var tagsArray = $routeParams.tags.split(',');
-        console.log($routeParams.tags);
         $http.get("/api/BlogAPI/GetPostsByTags?search_tags_json=" + angular.toJson(tagsArray))
             .then(addPostsToList);
     } else if ($routeParams.type) {
-        console.log($routeParams.type);
+        $scope.$parent.tags.clearSelection();
         $http.get("/api/BlogAPI/GetPostsByType?type_json=" + angular.toJson($routeParams.type))
             .then(addPostsToList);
     } else {
@@ -107,7 +110,6 @@ blog_app.controller('list_controller', function ($scope, $location, $routeParams
 
 blog_app.controller('post_controller', function ($scope, $routeParams, $http, $timeout) {
     $scope.post = {};
-    $scope.$parent.tags.clearSelection();
     $http.get("api/BlogAPI/GetPostById?id=" + $routeParams.postId)
         .then(function (result) {
             $scope.post = angular.fromJson(result.data);
@@ -124,6 +126,17 @@ blog_app.controller('post_controller', function ($scope, $routeParams, $http, $t
         result += tags[tags.length - 1].Text;
         return result;
     }
+});
+
+blog_app.controller('contact_controller', function ($scope, $routeParams, $http, $timeout) {
+    $scope.$parent.tags.clearSelection();
+    $scope.contactInfo = {};
+    $http.get("api/BlogAPI/GetContactInfo")
+        .then(function (result) {
+            $scope.contactInfo = angular.fromJson(result.data);
+            $scope.$parent.setContainerHeight(600);
+
+        });
 });
 
 blog_app.filter('text_length_filter', function () {
