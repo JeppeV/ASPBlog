@@ -6,89 +6,155 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="../../Scripts/admin_script.js"></script>
+    
+    <link href="~/Content/main_style.css" rel="stylesheet" />
     <link href="~/Content/admin_style.css" rel="stylesheet" />
 
 </head>
 <body ng-app="admin_app" ng-controller="main_controller">
     <h1>Administration Page</h1>
-    <div id="main_container">
-        Title: <input ng-model="post_temp.Title" type="text" />
-        <hr />
-        Type: <input ng-model="post_temp.Type" type="text" />
-        <hr />
-        <div class="image_selection">
-            Main Image: <input type="file" image-model="post_temp.MainImage_temp" image-preview-id="main_image_preview" required />
+    <div id="admin_main_container">
+        <div id="admin_input_container">
+            Title: <input ng-model="post_temp.Title" type="text" />
+            <hr />
+            Type: <input ng-model="post_temp.Type" type="text" />
+            <hr />
+            <div class="image_selection">
+                Main Image: <input type="file" image-model="post_temp.MainImage_temp" image-preview-id="main_image_preview" required />
+                <br />
+                <br />
+                <img id="main_image_preview" />
+                <br />
+            </div>
+            <hr />
+            IntroText:
             <br />
+            <textarea ng-model="post_temp.IntroText"></textarea>
+            <hr />
             <br />
-            <img id="main_image_preview" />
-            <br />
-        </div>
-        <hr />
-        IntroText:
-        <br />
-        <textarea ng-model="post_temp.IntroText">
-        </textarea>
-        <hr />
-        <br />
-        Ingredients:
-        <div id="ingredients_container">
-            <ul id="ingredient_list" >
-                <li ng-repeat="ingredient in post_temp.Ingredients">
-                    <input class="ingredient_input" type="text" ng-model="ingredient.Text" />
-                </li>
-                <li>
-                    <button ng-click="addNewTo('Ingredients')">Add</button>
-                    <button ng-click="removeLastFrom('Ingredients')">Remove</button>
-                </li>
-            </ul>
-        </div>
-        <hr />
-        Steps:
-        <div id="steps_container">
-            <table id="steps_table">
-                <tr ng-repeat="step in post_temp.Steps_temp" class="step_data">
-                    <td>
-                        <input class="step_input" type="text" ng-model="step.Text" />
-                        <br />
-                        <br />
-                        <input type="file" image-model="step.Image_temp" image-preview-id="step_image_preview_{{$index}}" />
+            Ingredients:
+            <div id="ingredients_container">
+                <ul id="ingredient_list">
+                    <li ng-repeat="ingredient in post_temp.Ingredients">
+                        <input class="ingredient_input" type="text" ng-model="ingredient.Text" />
+                    </li>
+                    <li>
+                        <button ng-click="addNewTo('Ingredients')">Add</button>
+                        <button ng-click="removeLastFrom('Ingredients')">Remove</button>
+                    </li>
+                </ul>
+            </div>
+            <hr />
+            Steps:
+            <div id="steps_container">
+                <table id="steps_table">
+                    <tr ng-repeat="step in post_temp.Steps_temp" class="step_data">
+                        <td>
+                            <input class="step_input" type="text" ng-model="step.Text" />
+                            <br />
+                            <br />
+                            <input type="file" image-model="step.Image_temp" image-preview-id="step_image_preview_{{$index}}" />
 
-                        <br />
-                        
-                    </td>
-                    <td>
-                        <img id="step_image_preview_{{$index}}" />
-                        <br />
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <button ng-click="addNewTo('Steps')">Add</button>
-                        <button ng-click="removeLastFrom('Steps')">Remove</button>
-                    </td>
-                </tr>
-            </table>
-        </div>  
-        <hr />
-        Tags 
-        <div id="tags_container">
-            <ul id="tags_list">
-                <li ng-repeat="tag in post_temp.Tags">
-                    <input class="tag_input" type="text" ng-model="tag.Text" />
-                </li>
-                <li>
-                    <button ng-click="addNewTo('Tags')">Add</button>
-                    <button ng-click="removeLastFrom('Tags')">Remove</button>
-                </li>
-            </ul>
-        </div>
-        OutroText:
-        <br />
-        <textarea ng-model="post_temp.OutroText"></textarea>
-        <hr />
-        <br />
+                            <br />
 
-        <button ng-click="addPost()">Add Post</button>
+                        </td>
+                        <td>
+                            <img id="step_image_preview_{{$index}}" />
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button ng-click="addNewTo('Steps')">Add</button>
+                            <button ng-click="removeLastFrom('Steps')">Remove</button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr />
+            Tags
+            <div id="tags_container">
+                <ul id="tags_list">
+                    <li ng-repeat="tag in post_temp.Tags">
+                        <input class="tag_input" type="text" ng-model="tag.Text" />
+                    </li>
+                    <li>
+                        <button ng-click="addNewTo('Tags')">Add</button>
+                        <button ng-click="removeLastFrom('Tags')">Remove</button>
+                    </li>
+                </ul>
+            </div>
+            OutroText:
+            <br />
+            <textarea ng-model="post_temp.OutroText"></textarea>
+            <hr />
+            <br />
+
+            <button ng-click="addPost()">Add Post</button>
+        </div>
+        <div id="admin_preview_title">
+            Preview
+        </div>
+
+        <div id="admin_preview_container">
+            <div id="post_container">
+
+                <div id="post_header">
+                    <div id="post_header_title" class="fill_parent">
+                        {{post.Title}}
+                    </div>
+                    <div id="post_header_type" class="fill_parent">
+                        {{post.Type}}
+                    </div>
+                </div>
+
+                <div id="post_intro" class="post_text text_formatting">{{post.IntroText}}</div>
+
+                <div id="post_image_container">
+                    <img ng-src="/Home/Image/?imageID={{post.MainImageID}}" />
+                </div>
+
+                <div id="post_ingredients_header">
+                    Ingredients
+                </div>
+
+                <div id="post_ingredients">
+                    <ul id="post_ingredients_list">
+                        <li class="post_ingredient post_text" ng-repeat="ingredient in post.Ingredients">
+                            {{ingredient.Text}}
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="post_steps_header">
+                    Steps
+                </div>
+
+                <div id="post_steps">
+                    <ol id="post_steps_list">
+                        <li class="post_step post_text " ng-repeat="step in post.Steps">
+                            <div>{{step.Text}}</div>
+                            <div ng-if="step.StepImageID" class="step_image_container">
+                                <img ng-src="/Home/Image/?imageID={{step.StepImageID}}" />
+                            </div>
+
+                        </li>
+                    </ol>
+                </div>
+
+                <div id="post_outro" class="post_text text_formatting">{{post.OutroText}}</div>
+
+                <div id="post_tags" class="post_text">
+                    <a ng-repeat="tag in post.Tags" ng-click="showPostsByTags(tag.Text)">
+                        {{tag.Text}}<span ng-if="$index < post.Tags.length-1">, </span>
+                    </a>
+
+
+                </div>
+
+            </div>
+        </div>
+
     </div>  
 
 
