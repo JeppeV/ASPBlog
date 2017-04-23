@@ -24,9 +24,10 @@ namespace AspBlog.Controllers
             List<BlogPost> resultPosts;
             using (var context = new BlogModelContext())
             {
-                resultPosts = getFullBlogPostQuery(context).OrderByDescending(p => convertDateStringToDateTime(p.Date)).ToList();
+                resultPosts = getFullBlogPostQuery(context).ToList();
 
             }
+            resultPosts = resultPosts.OrderByDescending(p => convertDateStringToDateTime(p.Date)).ToList();
             var jsonResponse = getJSON(resultPosts);
             return jsonResponse;
         }

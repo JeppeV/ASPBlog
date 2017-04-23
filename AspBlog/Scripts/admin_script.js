@@ -2,14 +2,116 @@
 
 var admin_app = angular.module("admin_app", []);
 
+var utility = {
+
+    initNewEmptyPost: function () {
+        return {
+            Title: "",
+            Type: "",
+            MainImage_temp: null,
+            IntroText: "",
+            OutroText: "",
+            Ingredients: [],
+            Steps_temp: [],
+            Tags: []
+        };
+    },
+
+    buildFinalPostData: function (post_temp) {
+        function stringFilter(element) {
+            return element.Text != "";
+        };
+
+        function getFormattedDateString() {
+            const date = new Date();
+            return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
+        }
+
+        var result = {
+            post: {
+                Title: post_temp.Title.trim(),
+                Date: getFormattedDateString(),
+                Type: post_temp.Type.trim(),
+                MainImageId: post_temp.MainImage_temp ? "exists" : "", //used to detect whether a main image was selected
+                IntroText: post_temp.IntroText.trim(),
+                OutroText: post_temp.OutroText.trim(),
+                Ingredients: post_temp.Ingredients
+                    .map(function (ingredient) { return { Text: ingredient.Text.trim() } })
+                    .filter(stringFilter),
+                Steps: post_temp.Steps_temp
+                    .map(function (step) {
+                        // set StepImageID to be image info temporarily
+                        console.log(step.Image_temp);
+                        return { Text: step.Text.trim(), StepImageID: step.Image_temp }
+                    })
+                    .filter(stringFilter),
+                Tags: post_temp.Tags
+                    .map(function (tag) { return { Text: tag.Text.trim() } })
+                    .filter(stringFilter)
+            },
+            images: []
+        };
+
+        result.images.push(post_temp.MainImage_temp);
+        for (var i = 0; i < result.post.Steps.length; i++) {
+            var step = result.post.Steps[i];
+            if (step.StepImageID) {
+                result.images.push(step.StepImageID);
+
+            } else {
+                result.images.push(null);
+            }
+            step.StepImageID = "";
+        }
+        return result;
+
+    },
+
+    addImagesToPayload: function (images, payload) {
+        payload.append('main_image', images[0]);
+        for (var i = 1; i < images.length; i++) {
+            var image = images[i];
+            if (image) {
+                payload.append('step_image%' + (i - 1), image);
+            }
+
+        }
+        return payload;
+    },
+
+    isPostValid: function (post) {
+        var message = "";
+        var result = true;
+        if (!(result = result && post.Title)) { message = "Missing Title"; }
+        else if (!(result = result && post.Type)) { message = "Missing Type"; }
+        else if (!(result = result && post.MainImageId)) { message = "Missing Main Image"; }
+        else if (!(result = result && post.IntroText)) { message = "Missing IntroText"; }
+        else if (!(result = result && post.OutroText)) { message = "Missing OutroText"; }
+        else if (!(result = result && post.Ingredients.length)) { message = "Ingredients list empty"; }
+        else if (!(result = result && post.Steps.length)) { message = "Steps list empty"; }
+        else if (!(result = result && post.Tags.length)) { message = "Tags list empty"; }
+
+        if (!result) window.alert(message);
+        return result;
+    }
+}
+
 admin_app.controller("main_controller", function ($scope, $http) {
 
+    $scope.posts = [];
+    // temporary post object to store the current post object
+    $scope.post_temp = utility.initNewEmptyPost();
+
+
+    $http.get("/api/BlogAPI/GetAllPosts").then(function(result) {
+        $scope.posts = angular.fromJson(result.data);
+    });
+
     $scope.addPost = function () {
-        var post_data = buildFinalPostData($scope.post_temp);
-        console.log(post_data);
-        if (!isPostValid(post_data.post)) return;
+        var post_data = utility.buildFinalPostData($scope.post_temp);
+        if (!utility.isPostValid(post_data.post)) return;
         var payload = new FormData();
-        payload = addImagesToPayload(post_data.images, payload);
+        payload = utility.addImagesToPayload(post_data.images, payload);
         payload.append('post_data', JSON.stringify(post_data.post));
         $http({
             url: "/api/BlogAPI/AddPost",
@@ -22,25 +124,17 @@ admin_app.controller("main_controller", function ($scope, $http) {
             transformRequest: angular.identity
         });
     };
-    
-    // temporary post object to store the current post object
-    $scope.post_temp = {
-        Title: "",
-        Type: "",
-        MainImage_temp: null,
-        IntroText: "",
-        OutroText: "",
-        Ingredients: [],
-        Steps_temp: [],
-        Tags: []
-    }
 
+    $scope.newPost = function () {
+        $scope.post_temp = utility.initNewEmptyPost();
+    }
+    
     $scope.addNewTo = function (collection_name) {
         switch (collection_name) {
             case "Ingredients":
                 $scope.post_temp.Ingredients.push({ Text: "" });
                 break;
-            case "Steps":
+            case "Steps_temp":
                 $scope.post_temp.Steps_temp.push({ Text: "", Image_temp: null });
                 break;
             case "Tags":
@@ -53,7 +147,8 @@ admin_app.controller("main_controller", function ($scope, $http) {
         var collection = $scope.post_temp[collection_name];
         if (collection) collection.pop();
     }
-          
+
+    
 });
 
 admin_app.directive("imageModel", [function () {
@@ -63,10 +158,6 @@ admin_app.directive("imageModel", [function () {
         reader.onload = function (load_event) {
             var preview_elem = document.getElementById(previewId);
             preview_elem.src = load_event.target.result;   
-            //detect orientation of image
-            var w = preview_elem.naturalWidth || preview_elem.width;
-            var h = preview_elem.naturalHeight || preview_elem.height;
-            preview_elem.style.maxHeight = h > w ? "600px" : "400px";
         };
         reader.readAsDataURL(imageFile);
     };
@@ -94,81 +185,3 @@ admin_app.directive("imageModel", [function () {
         }
     }
 }]);
-
-function getFormattedDateString() {
-    const date = new Date();
-    return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-}
-
-function buildFinalPostData(post_temp) {
-    function stringFilter(element) {
-        return element.Text != "";
-    };
-
-    var result = {
-        post: {
-            Title: post_temp.Title.trim(),
-            Date: getFormattedDateString(),
-            Type: post_temp.Type.trim(),
-            MainImageId: post_temp.MainImage_temp ? "exists" : "", //used to detect whether a main image was selected
-            IntroText: post_temp.IntroText.trim(),
-            OutroText: post_temp.OutroText.trim(),
-            Ingredients: post_temp.Ingredients
-                .map(function (ingredient) { return { Text: ingredient.Text.trim() } })
-                .filter(stringFilter),
-            Steps: post_temp.Steps_temp
-                .map(function (step) {
-                    // set StepImageID to be image info temporarily
-                    console.log(step.Image_temp);
-                    return { Text: step.Text.trim(), StepImageID: step.Image_temp }
-                })
-                .filter(stringFilter),
-            Tags: post_temp.Tags
-                .map(function (tag) { return { Text: tag.Text.trim() } })
-                .filter(stringFilter)
-        },
-        images: []
-    };
-
-    result.images.push(post_temp.MainImage_temp);
-    for (var i = 0; i < result.post.Steps.length; i++) {
-        var step = result.post.Steps[i];
-        if (step.StepImageID) {
-            result.images.push(step.StepImageID);
-            
-        } else {
-            result.images.push(null);
-        }
-        step.StepImageID = "";
-    }
-    return result;
-
-};
-
-function addImagesToPayload(images, payload) {
-    payload.append('main_image', images[0]);
-    for (var i = 1; i < images.length; i++) {
-        var image = images[i];
-        if(image){
-            payload.append('step_image%' + (i-1), image);
-        }
-        
-    }
-    return payload;
-};
-
-function isPostValid(post) {
-    var message = "";
-    var result = true;
-    if (!(result = result && post.Title)) { message = "Missing Title"; }
-    else if (!(result = result && post.Type)) { message = "Missing Type"; }
-    else if (!(result = result && post.MainImageId)) { message = "Missing Main Image"; }
-    else if (!(result = result && post.IntroText)) { message = "Missing IntroText"; }
-    else if (!(result = result && post.OutroText)) { message = "Missing OutroText"; }
-    else if (!(result = result && post.Ingredients.length)) { message = "Ingredients list empty"; }
-    else if (!(result = result && post.Steps.length)) { message = "Steps list empty"; }
-    else if (!(result = result && post.Tags.length)) { message = "Tags list empty"; }
-
-    if (!result) window.alert(message);
-    return result;
-}
