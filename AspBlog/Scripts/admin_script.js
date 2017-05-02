@@ -4,7 +4,7 @@ var admin_app = angular.module("admin_app", []);
 
 var utility = {
 
-    initNewEmptyPost: function () {
+    initEmptyTempPost: function () {
         return {
             Title: "",
             Type: "",
@@ -17,6 +17,10 @@ var utility = {
         };
     },
 
+    initExistingTempPost: function (post) {
+
+    },
+
     buildFinalPostData: function (post_temp) {
         function stringFilter(element) {
             return element.Text != "";
@@ -25,7 +29,7 @@ var utility = {
         function getFormattedDateString() {
             const date = new Date();
             return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
-        }
+        };
 
         var result = {
             post: {
@@ -93,19 +97,40 @@ var utility = {
 
         if (!result) window.alert(message);
         return result;
+    },
+
+    getPostById: function (posts, id) {
+        for (var i = 0; i < posts.length; i++) {
+            var currentPost = posts[i];
+            if (currentPost.PostId === id) {
+                return currentPost;
+            }
+        };
     }
 }
 
 admin_app.controller("main_controller", function ($scope, $http) {
 
+    // all selectable posts
     $scope.posts = [];
+
+    // selected post ID
+    $scope.selected_post_id = null;
+
     // temporary post object to store the current post object
-    $scope.post_temp = utility.initNewEmptyPost();
+    $scope.post_temp = utility.initEmptyTempPost();
 
-
+    // get all posts in order to list them in the sidebar
     $http.get("/api/BlogAPI/GetAllPosts").then(function(result) {
         $scope.posts = angular.fromJson(result.data);
     });
+
+    $scope.selectPost = function (id) {
+        var post = utility.getPostById($scope.posts, id);
+        //test
+        console.log("selectPost called with id: " + id);
+        $scope.post_temp.Title = "Test";
+    };
 
     $scope.addPost = function () {
         var post_data = utility.buildFinalPostData($scope.post_temp);
@@ -126,8 +151,16 @@ admin_app.controller("main_controller", function ($scope, $http) {
     };
 
     $scope.newPost = function () {
-        $scope.post_temp = utility.initNewEmptyPost();
-    }
+        $scope.post_temp = utility.initEmptyTempPost();
+    };
+
+    $scope.updatePost = function () {
+        //TODO: missing impl
+    };
+
+    $scope.deletePost = function () {
+        //TODO: missing impl
+    };
     
     $scope.addNewTo = function (collection_name) {
         switch (collection_name) {
@@ -175,6 +208,7 @@ admin_app.directive("imageModel", [function () {
 
                 scope.$apply(function () {
                     scope.image_name = file;
+                    // test
                     console.log(file);
                 });
 

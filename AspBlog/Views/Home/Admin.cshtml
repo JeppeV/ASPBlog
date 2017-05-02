@@ -156,20 +156,20 @@
         <div id="admin_main_container_menu">
             <div class="admin_menu_title" >Posts</div>
             <div id="admin_menu_posts_container">
-                <div class="admin_menu_post_title" ng-repeat="post in posts">
+                <div class="admin_menu_post_title" ng-repeat="post in posts" ng-click="selectPost(post.PostId)">
                     {{post.Title}}
                 </div>
             </div>
             <div class="admin_menu_title" >Control Panel</div>
             <div id="admin_menu_controlpanel">
                 <div id="admin_menu_controlpanel_newpost">
-                    <button class="admin_menu_controlpanel_button" ng-click="newPost()">New Post / Clear</button>
-                    <button class="admin_menu_controlpanel_button" ng-click="addPost()">Add Post</button>
+                    <button class="admin_menu_controlpanel_button" ng-click="newPost()" ng-disabled="selected_post_id !== null">New Post / Clear</button>
+                    <button class="admin_menu_controlpanel_button" ng-click="addPost()" ng-disabled="selected_post_id !== null">Add Post</button>
                 </div>
 
                 <div id="admin_menu_controlpanel_currentpost">
-                    <button class="admin_menu_controlpanel_button" ng-click="">Update Post</button>
-                    <button class="admin_menu_controlpanel_button" ng-click="">Delete Post</button>
+                    <button class="admin_menu_controlpanel_button" ng-click="updatePost()" ng-disabled="selected_post_id === null" >Update Post</button>
+                    <button class="admin_menu_controlpanel_button" ng-click="deletePost()" ng-disabled="selected_post_id === null" >Delete Post</button>
                 </div>
                 
             </div>
