@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Web;
 using System.Threading.Tasks;
 using System.IO;
+using System.Collections.ObjectModel;
 
 namespace AspBlog.Controllers
 {
@@ -107,7 +108,7 @@ namespace AspBlog.Controllers
 
         [HttpGet]
         [ActionName("GetAllTags")]
-        public string getAllTags()
+        public string GetAllTags()
         {
             List<string> resultTags;
             using (var context = new BlogModelContext())
@@ -121,7 +122,7 @@ namespace AspBlog.Controllers
 
         [HttpGet]
         [ActionName("GetAllTypes")]
-        public string getAllTypes()
+        public string GetAllTypes()
         {
             List<string> resultTypes;
             using (var context = new BlogModelContext())
@@ -133,19 +134,71 @@ namespace AspBlog.Controllers
             return jsonResponse;
         }
 
-        
+        //TODO test 
         [HttpPost]
-        [ActionName("AddPost")]
-        public async Task<string> Test()
+        [ActionName("UpdatePost")]
+        public async Task<string> UpdatePost()
         {
             if (!Request.Content.IsMimeMultipartContent())
+            {
                 throw new Exception();
+            }
 
-            var streamProvider = await Request.Content.ReadAsMultipartAsync(); // HERE
-            BlogPost newPost = null;
+            MultipartMemoryStreamProvider streamProvider = await Request.Content.ReadAsMultipartAsync();
+            Tuple<BlogPost, List<TempImageInfo>> resultPostData = await extractPostData(streamProvider.Contents);
+            BlogPost resultPost = resultPostData.Item1;
+            List<TempImageInfo> imageInfos = resultPostData.Item2;
+
+            using (var context = new BlogModelContext())
+            {
+                BlogPost existingPost = getFullBlogPostQuery(context).FirstOrDefault(p => p.PostId == resultPost.PostId);
+                existingPost = resultPost;
+                saveImagesToDiskAndStoreImageIDs(existingPost, imageInfos);
+
+                context.SaveChanges();
+
+            }
+
+            return "";
+
+        }
+
+        [HttpPost]
+        [ActionName("AddPost")]
+        public async Task<string> AddPost()
+        {
+            if (!Request.Content.IsMimeMultipartContent())
+            {
+                throw new Exception();
+            } 
+
+            MultipartMemoryStreamProvider streamProvider = await Request.Content.ReadAsMultipartAsync();
+            Tuple<BlogPost, List<TempImageInfo>> resultPostData = await extractPostData(streamProvider.Contents);
+            BlogPost resultPost = resultPostData.Item1;
+            List<TempImageInfo> imageInfos = resultPostData.Item2;
+
+            using (var context = new BlogModelContext())
+            {
+                //save current post in order to generate database unique id
+                context.BlogPosts.Add(resultPost);
+                context.SaveChanges();
+                saveImagesToDiskAndStoreImageIDs(resultPost, imageInfos);
+                
+                //save post with updated info
+                context.SaveChanges();
+
+            }
+
+            return "";
+
+        }
+
+        private async Task<Tuple<BlogPost, List<TempImageInfo>>> extractPostData(Collection<HttpContent> requestData)
+        {
+            BlogPost resultPost = null;
             List<TempImageInfo> imageInfos = new List<TempImageInfo>();
-            
-            foreach (HttpContent data in streamProvider.Contents)
+
+            foreach (HttpContent data in requestData)
             {
                 string formName = data.Headers.ContentDisposition.Name.Trim('\"');
                 if (formName == "main_image")
@@ -157,11 +210,11 @@ namespace AspBlog.Controllers
                     imageInfo.IsMainImage = true;
                     imageInfos.Add(imageInfo);
                 }
-                else if(formName == "post_data")
+                else if (formName == "post_data")
                 {
                     // post data
                     var jsonPost = await data.ReadAsStringAsync();
-                    newPost = new JavaScriptSerializer().Deserialize<BlogPost>(jsonPost);
+                    resultPost = new JavaScriptSerializer().Deserialize<BlogPost>(jsonPost);
                 }
                 else
                 {
@@ -173,31 +226,8 @@ namespace AspBlog.Controllers
                     imageInfo.IsMainImage = false;
                     imageInfos.Add(imageInfo);
                 }
-                
             }
-            Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~") + @"Images\" + newPost.Title + @"\Steps");
-            foreach(TempImageInfo imageInfo in imageInfos)
-            {
-                if (imageInfo.IsMainImage)
-                {
-                    newPost.MainImageID = saveImage(newPost, imageInfo);
-                }
-                else
-                {
-                    
-                    var stepIndex = int.Parse(imageInfo.ImageContentName.Split('%')[1]);
-                    
-                    newPost.Steps.ElementAt(stepIndex).StepImageID = saveImage(newPost, imageInfo);
-                }
-            }
-            
-            using(var context = new BlogModelContext())
-            {
-                context.BlogPosts.Add(newPost);
-                context.SaveChanges();
-            }
-            return "";
-
+            return Tuple.Create(resultPost, imageInfos);
         }
 
         private class TempImageInfo
@@ -206,11 +236,37 @@ namespace AspBlog.Controllers
             public string ImageFilename { get; set; }
             public byte[] ImageData { get; set; }
             public bool IsMainImage { get; set; }
-        }        
+        }  
 
-        private string saveImage(BlogPost post, TempImageInfo imageInfo)
+        private void saveImagesToDiskAndStoreImageIDs(BlogPost post, List<TempImageInfo> imageInfos)
         {
-            string imageID = generateImageID(post, imageInfo);
+            int uniquePostID = post.PostId;
+            string postImagesDirectoryPath = HttpContext.Current.Server.MapPath("~") + @"Images\" + uniquePostID;
+            if(Directory.Exists(postImagesDirectoryPath))
+            {
+                Directory.Delete(postImagesDirectoryPath, true);
+            }
+            Directory.CreateDirectory(postImagesDirectoryPath + @"\Steps");
+
+            foreach (TempImageInfo imageInfo in imageInfos)
+            {
+                if (imageInfo.IsMainImage)
+                {
+                    post.MainImageID = saveImage(uniquePostID, imageInfo);
+                }
+                else
+                {
+                    var stepIndex = int.Parse(imageInfo.ImageContentName.Split('%')[1]);
+                    post.Steps.ElementAt(stepIndex).StepImageID = saveImage(uniquePostID, imageInfo);
+                }
+            }
+        }
+        
+   
+
+        private string saveImage(int uniquePostID, TempImageInfo imageInfo)
+        {
+            string imageID = generateImageID(uniquePostID, imageInfo);
             string imagePath = HttpContext.Current.Server.MapPath("~") + @"Images\" + imageID;
             using(FileStream fs = new FileStream(imagePath, FileMode.OpenOrCreate))
             {
@@ -219,17 +275,17 @@ namespace AspBlog.Controllers
             return imageID;
         }
 
-        private string generateImageID(BlogPost post, TempImageInfo imageInfo)
+        private string generateImageID(int uniquePostID, TempImageInfo imageInfo)
         {
             string extension = Utility.getFileExtension(imageInfo.ImageFilename);
             if (imageInfo.IsMainImage)
             {
-                return post.Title + @"\main." + extension;
+                return uniquePostID + @"\main." + extension;
             }
             else
             {
                 var stepIndex = int.Parse(imageInfo.ImageContentName.Split('%')[1]);
-                return post.Title + @"\Steps\step$" + stepIndex + "." + extension;
+                return uniquePostID + @"\Steps\step$" + stepIndex + "." + extension;
             }
         }
 

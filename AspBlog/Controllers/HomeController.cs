@@ -22,7 +22,7 @@ namespace AspBlog.Controllers
             if (imageID.Contains("..")) return null;
             if (imageID.Split('\\').Length > 3) return null;
             string extension = Utility.getFileExtension(imageID);
-            return File(pathToImage(imageID), "image/"+ extension);
+            return File(pathToImage(imageID), "image/" + extension);
         }
 
         /* /Home/ContactImage */

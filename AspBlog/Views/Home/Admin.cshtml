@@ -105,7 +105,7 @@
 
                     <div id="post_intro" class="post_text text_formatting">{{post_temp.IntroText}}</div>
 
-                    <div id="post_image_container">
+                    <div ng-if="post_temp.MainImage_temp != null" id="post_image_container">
                         <img id="main_image_preview" />
                     </div>
 
@@ -140,7 +140,7 @@
                     <div id="post_outro" class="post_text text_formatting">{{post_temp.OutroText}}</div>
 
                     <div id="post_tags" class="post_text">
-                        <a ng-repeat="tag in post.Tags" ng-click="showPostsByTags(tag.Text)">
+                        <a ng-repeat="tag in post_temp.Tags">
                             {{tag.Text}}<span ng-if="$index < post.Tags.length-1">, </span>
                         </a>
 
@@ -163,7 +163,7 @@
             <div class="admin_menu_title" >Control Panel</div>
             <div id="admin_menu_controlpanel">
                 <div id="admin_menu_controlpanel_newpost">
-                    <button class="admin_menu_controlpanel_button" ng-click="newPost()" ng-disabled="selected_post_id !== null">New Post / Clear</button>
+                    <button class="admin_menu_controlpanel_button" ng-click="newPost()" >New Post / Clear</button>
                     <button class="admin_menu_controlpanel_button" ng-click="addPost()" ng-disabled="selected_post_id !== null">Add Post</button>
                 </div>
 

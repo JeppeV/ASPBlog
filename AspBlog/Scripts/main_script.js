@@ -49,13 +49,11 @@ blog_app.controller('main_controller', function ($scope, $location, $http) {
     }
     $http.get("/api/BlogAPI/GetAllTypes")
         .then(function (result) {
-            console.log(result.data);
             $scope.types = angular.fromJson(result.data);
         });
 
     $http.get("/api/BlogAPI/GetAllTags")
        .then(function (result) {
-           console.log(result.data);
            $scope.tags.init(angular.fromJson(result.data));
            
        });
