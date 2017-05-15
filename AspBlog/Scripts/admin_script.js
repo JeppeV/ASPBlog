@@ -138,7 +138,7 @@ var utility = {
 
     buildPostPayload: function (post_temp) {
         var post_data = utility.buildFinalPostData(post_temp);
-        if (!utility.isPostValid(post_data.post)) return;
+        if (!utility.isPostValid(post_data.post)) return null;
         var payload = new FormData();
         payload = utility.addImagesToPayload(post_data.images, payload);
         payload.append('post_data', JSON.stringify(post_data.post));
@@ -209,14 +209,17 @@ admin_app.controller("main_controller", function ($scope, $http) {
     });
 
     $scope.selectPost = function (id) {
+        /*
         var selected_post = utility.getPostById($scope.posts, id);
         $scope.post_temp = utility.initExistingTempPost(selected_post, $http);
         $scope.selected_post_id = $scope.post_temp.PostId;
+        */
     };
  
 
     $scope.addPost = function () {
         var payload = utility.buildPostPayload($scope.post_temp);
+        if (payload === null) return;
         $http({
             url: "/api/BlogAPI/AddPost",
             method: 'POST',
@@ -234,7 +237,9 @@ admin_app.controller("main_controller", function ($scope, $http) {
         $scope.selected_post_id = null
     };
 
+
     $scope.updatePost = function () {
+        /*
         var payload = utility.buildPostPayload($scope.post_temp);
         $http({
             url: "/api/BlogAPI/UpdatePost",
@@ -246,6 +251,7 @@ admin_app.controller("main_controller", function ($scope, $http) {
             //prevents serializing payload.  don't do it.
             transformRequest: angular.identity
         });
+        */
     };
 
     $scope.deletePost = function () {
